@@ -5,6 +5,7 @@ import (
 	"FFmpegBatchCut/util"
 	"fmt"
 	"log"
+	"os"
 	"path/filepath"
 )
 
@@ -29,14 +30,14 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			//if err := os.Remove(timestampsFile); err != nil {
-			//	log.Printf("删除%v失败\n", timestamps)
-			//} else {
-			//	if err := os.Remove(mp4); err != nil {
-			//		log.Printf("删除%v失败\n", mp4)
-			//	}
-			//	log.Printf("分割文件结束,删除%v和%v失败\n", timestamps, mp4)
-			//}
+			if err := os.Remove(timestampsFile); err != nil {
+				log.Printf("删除%v失败\n", timestamps)
+			} else {
+				if err := os.Remove(mp4); err != nil {
+					log.Printf("删除%v失败\n", mp4)
+				}
+				log.Printf("分割文件结束,删除%v和%v失败\n", timestamps, mp4)
+			}
 		}
 	}
 }
