@@ -137,72 +137,39 @@ func IsExist(fp string) bool {
 	}
 }
 
-func IsVideo(fp string) bool {
-	file, _ := os.Open(fp)
+func IsVideo(fname string) bool {
+	// Open a file descriptor
+	file, _ := os.Open(fname)
+
 	// We only have to pass the file header = first 261 bytes
 	head := make([]byte, 261)
 	file.Read(head)
-	if filetype.IsVideo(head) {
-		fmt.Printf("File: %v is a video\n", fp)
+	return filetype.IsVideo(head)
+}
+func GetAllVideoFilesInDir(dir string) ([]string, error) {
+	var files []string
+	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		// 判断是否是文件，如果是文件则将其绝对路径添加到files切片中
+		if !info.IsDir() {
+			if IsVideo(path) {
+				files = append(files, path)
+			}
+
+		}
+		return nil
+	})
+	return files, err
+}
+func IfFileExists(path string) bool {
+	_, err := os.Stat(path)
+	if err == nil {
 		return true
 	}
+	if os.IsNotExist(err) {
+		return false
+	}
 	return false
-}
-
-/*
-获取指定目录下唯一一个mp4文件
-*/
-func GetUniqueMP4File(dir string) (string, error) {
-	var mp4Files []string
-
-	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if !info.IsDir() && filepath.Ext(info.Name()) == ".mp4" {
-			mp4Files = append(mp4Files, path)
-		}
-		return nil
-	})
-
-	if err != nil {
-		return "", err
-	}
-
-	if len(mp4Files) == 1 {
-		return mp4Files[0], nil
-	} else if len(mp4Files) > 1 {
-		return "", fmt.Errorf("找到多个 MP4 文件: %v", mp4Files)
-	}
-
-	return "", nil
-}
-
-/*
-获取指定目录下唯一一个mkv文件
-*/
-func GetUniqueMKVFile(dir string) (string, error) {
-	var mp4Files []string
-
-	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if !info.IsDir() && filepath.Ext(info.Name()) == ".mkv" {
-			mp4Files = append(mp4Files, path)
-		}
-		return nil
-	})
-
-	if err != nil {
-		return "", err
-	}
-
-	if len(mp4Files) == 1 {
-		return mp4Files[0], nil
-	} else if len(mp4Files) > 1 {
-		return "", fmt.Errorf("找到多个 MKV 文件: %v", mp4Files)
-	}
-
-	return "", nil
 }
