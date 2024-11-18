@@ -29,6 +29,11 @@ func CutOne(fp string, timestamps []string) (err error) {
 	defer func() {
 		log.Println("运行完成")
 	}()
+	if timestamps[0] != "000000000" {
+		newElement := "000000000"
+		newSlice := append([]string{newElement}, timestamps...)
+		timestamps = newSlice
+	}
 	timestamps = formatTimestamps(timestamps)
 	fname := fp
 	folder := strings.Split(fname, ".")[0]

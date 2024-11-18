@@ -14,3 +14,5 @@ Icon
 .idea
 .fleet
 *.avi
+*.log
+.DS_Store
