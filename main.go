@@ -9,11 +9,14 @@ import (
 	"path/filepath"
 )
 
+func init() {
+	util.SetLog("BitchCut.log")
+}
 func main() {
-	root := "F:\\media"
+	root := "D:\\迅雷下载"
 	folders, _ := util.GetFoldersWithTimestamps(root)
 	for _, folder := range folders {
-		fmt.Printf("out:=%v\n", folders)
+		fmt.Printf("符合筛选条件的目录:%v\n", folders)
 		timestampsFile := filepath.Join(folder, "timestamps.txt")
 		if !util.IfFileExists(timestampsFile) {
 			continue
@@ -31,7 +34,7 @@ func main() {
 			log.Fatal(err)
 		} else {
 			if err := os.Remove(timestampsFile); err != nil {
-				log.Printf("删除%v失败\n", timestamps)
+				log.Printf("删除%v失败\t%v\n", timestamps, err)
 			} else {
 				if err := os.Remove(mp4); err != nil {
 					log.Printf("删除%v失败\n", mp4)
