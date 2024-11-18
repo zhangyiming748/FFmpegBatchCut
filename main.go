@@ -11,6 +11,7 @@ import (
 
 func init() {
 	util.SetLog("BitchCut.log")
+	util.ExitAfterRun(util.Exit)
 }
 func main() {
 	root := "D:\\迅雷下载"
