@@ -41,7 +41,7 @@ func CutOne(fp string, timestamps []string) (err error) {
 	fname := fp
 	folder := strings.Split(fname, ".")[0]
 	os.Mkdir(folder, 0777)
-	if !strings.HasSuffix(fname, "mp4") && !strings.HasSuffix(fname, "mkv") {
+	if !strings.HasSuffix(fname, "mp4") {
 		log.Printf("开始转换%v为mp4标准格式\n", fname)
 		mp4 := strings.Replace(fname, filepath.Ext(fname), ".mp4", -1)
 		log.Printf("命令原文%v\n", exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4).String())
@@ -58,7 +58,13 @@ func CutOne(fp string, timestamps []string) (err error) {
 	}
 	length := len(timestamps)
 	for i := 0; i < length-1; i++ {
-		mp4 := strings.Join([]string{strconv.Itoa(i + 1), "mp4"}, ".")
+		var index string
+		if i < 10 {
+			index = fmt.Sprintf("%02d\n", i+1)
+		} else {
+			index = fmt.Sprintf("%02d\n", i+1)
+		}
+		mp4 := strings.Join([]string{index, "mp4"}, ".")
 		mp4 = strings.Join([]string{folder, mp4}, string(os.PathSeparator))
 		log.Printf("命令原文:%s\n", exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[i], "-to", timestamps[i+1], "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4).String())
 		cmd := exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[i], "-to", timestamps[i+1], "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4)
