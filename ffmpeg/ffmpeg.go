@@ -34,6 +34,9 @@ func CutOne(fp string, timestamps []string) (err error) {
 		newSlice := append([]string{newElement}, timestamps...)
 		timestamps = newSlice
 	}
+	if !IsValidate(timestamps) {
+		return fmt.Errorf("给定的时间戳文件:%v格式非法\n", timestamps)
+	}
 	timestamps = formatTimestamps(timestamps)
 	fname := fp
 	folder := strings.Split(fname, ".")[0]
@@ -95,4 +98,20 @@ func formatTimestamps(timestamps []string) []string {
 		formatted = append(formatted, formattedTimestamp)
 	}
 	return formatted
+}
+func IsValidate(timestamps []string) bool {
+	var s []int
+	for _, v := range timestamps {
+		i, err := strconv.Atoi(v)
+		if err != nil {
+			return false
+		}
+		s = append(s, i)
+	}
+	for i := 0; i < len(s)-1; i++ {
+		if s[i] > s[i+1] {
+			return false
+		}
+	}
+	return true
 }

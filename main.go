@@ -33,13 +33,13 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			if err := os.Remove(timestampsFile); err != nil {
+			if err := os.RemoveAll(timestampsFile); err != nil {
 				log.Printf("删除%v失败\t%v\n", timestamps, err)
 			} else {
-				if err := os.Remove(mp4); err != nil {
+				if err := os.RemoveAll(mp4); err != nil {
 					log.Printf("删除%v失败\n", mp4)
 				}
-				log.Printf("分割文件结束,删除%v和%v失败\n", timestamps, mp4)
+				log.Printf("分割文件结束,删除%v和%v失败\n", timestampsFile, mp4)
 			}
 		}
 	}
