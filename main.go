@@ -33,7 +33,7 @@ func main() {
 		mp4 := videos[0]
 		timestamps := util.ReadByLine(timestampsFile)
 		timestamps = removeEmptyStrings(timestamps)
-		log.Printf("目录%v\n文件%v\n时间戳%v\n", folder, mp4, timestamps)
+		log.Printf("目录%v\t文件%v\n", folder, mp4)
 		err := ffmpeg.CutOne(mp4, timestamps)
 		if err != nil {
 			log.Fatal(err)

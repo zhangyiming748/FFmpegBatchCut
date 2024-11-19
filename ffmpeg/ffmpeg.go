@@ -57,6 +57,7 @@ func CutOne(fp string, timestamps []string) (err error) {
 		return
 	}
 	length := len(timestamps)
+	log.Printf("时间戳%v\n", timestamps)
 	for i := 0; i < length-1; i++ {
 		var index string
 		if i < 10 {
