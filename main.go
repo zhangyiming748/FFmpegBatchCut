@@ -14,8 +14,11 @@ func init() {
 	util.ExitAfterRun(util.Exit)
 }
 func main() {
-	root := "D:\\迅雷下载"
+	root := "F:\\beforeCut\\ANG-008 永川乃亚 x 琴音冬爱姐个人写真神女同竞技泳衣女人拥有相机，拍出泳衣萌妹子的照片\\ANG-008"
 	folders, _ := util.GetFoldersWithTimestamps(root)
+	if len(folders) == 0 {
+		log.Fatalln("没有找到任何符合条件的文件")
+	}
 	for _, folder := range folders {
 		fmt.Printf("符合筛选条件的目录:%v\n", folders)
 		timestampsFile := filepath.Join(folder, "timestamps.txt")

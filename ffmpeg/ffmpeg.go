@@ -60,9 +60,9 @@ func CutOne(fp string, timestamps []string) (err error) {
 	for i := 0; i < length-1; i++ {
 		var index string
 		if i < 10 {
-			index = fmt.Sprintf("%02d\n", i+1)
+			index = fmt.Sprintf("%02d", i+1)
 		} else {
-			index = fmt.Sprintf("%02d\n", i+1)
+			index = fmt.Sprintf("%02d", i+1)
 		}
 		mp4 := strings.Join([]string{index, "mp4"}, ".")
 		mp4 = strings.Join([]string{folder, mp4}, string(os.PathSeparator))
