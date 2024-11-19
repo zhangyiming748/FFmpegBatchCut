@@ -14,7 +14,7 @@ func init() {
 	util.ExitAfterRun(util.Exit)
 }
 func main() {
-	root := "F:\\beforeCut\\ANG-008 永川乃亚 x 琴音冬爱姐个人写真神女同竞技泳衣女人拥有相机，拍出泳衣萌妹子的照片\\ANG-008"
+	root := "D:\\迅雷下载"
 	folders, _ := util.GetFoldersWithTimestamps(root)
 	if len(folders) == 0 {
 		log.Fatalln("没有找到任何符合条件的文件")
@@ -27,6 +27,7 @@ func main() {
 		}
 		videos, _ := util.GetAllVideoFilesInDir(folder)
 		if len(videos) > 1 {
+			log.Printf("跳过包含多个视频,可能是分割后的文件夹%v\n", folder)
 			continue
 		}
 		mp4 := videos[0]
