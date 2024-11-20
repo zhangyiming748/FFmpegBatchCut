@@ -77,7 +77,13 @@ func CutOne(fp string, timestamps []string) (err error) {
 			return err
 		}
 	}
-	mp4 := strings.Join([]string{strconv.Itoa(length), "mp4"}, ".")
+	var last string
+	if length < 10 {
+		last = fmt.Sprintf("%02d", length+1)
+	} else {
+		last = fmt.Sprintf("%02d", length+1)
+	}
+	mp4 := strings.Join([]string{last, "mp4"}, ".")
 	mp4 = strings.Join([]string{folder, mp4}, string(os.PathSeparator))
 	log.Printf("命令原文:%s\n", exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[length-1], "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4).String())
 	cmd := exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[length-1], "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4)
