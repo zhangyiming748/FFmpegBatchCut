@@ -111,12 +111,14 @@ func IsValidate(timestamps []string) bool {
 	for _, v := range timestamps {
 		i, err := strconv.Atoi(v)
 		if err != nil {
+			log.Printf("可能包含非数字字符:%v\n", v)
 			return false
 		}
 		s = append(s, i)
 	}
 	for i := 0; i < len(s)-1; i++ {
 		if s[i] > s[i+1] {
+			log.Printf("第%v行的数字有问题:%s\n", i+2, timestamps[i+1])
 			return false
 		}
 	}
