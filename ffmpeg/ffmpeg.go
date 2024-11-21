@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"regexp"
 	"runtime"
 	"strconv"
@@ -42,21 +41,21 @@ func CutOne(fp string, timestamps []string) (err error) {
 	fname := fp
 	folder := strings.Split(fname, ".")[0]
 	_ = os.Mkdir(folder, 0777)
-	if !strings.HasSuffix(fname, "mp4") {
-		log.Printf("开始转换%v为mp4标准格式\n", fname)
-		mp4 := strings.Replace(fname, filepath.Ext(fname), ".mp4", -1)
-		log.Printf("命令原文%v\n", exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4).String())
-		cmd := exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4)
-		// ffmpeg -hwaccel cuda -i -c:v h264_nvenc -preset medium -cq 20
-		if OperatingSystem == "darwin" && Architecture == "amd64" {
-			cmd = exec.Command("ffmpeg", "-i", fname, "-c:v", "libx265", "-tag:v", "hevc", "-c:a", "libopus", "-ac", "1", mp4)
-		}
-		err = util.Exec(cmd)
-		if err != nil {
-			return err
-		}
-		return
-	}
+	//if !strings.HasSuffix(fname, "mp4") {
+	//	log.Printf("开始转换%v为mp4标准格式\n", fname)
+	//	mp4 := strings.Replace(fname, filepath.Ext(fname), ".mp4", -1)
+	//	log.Printf("命令原文%v\n", exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4).String())
+	//	cmd := exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4)
+	//	// ffmpeg -hwaccel cuda -i -c:v h264_nvenc -preset medium -cq 20
+	//	if OperatingSystem == "darwin" && Architecture == "amd64" {
+	//		cmd = exec.Command("ffmpeg", "-i", fname, "-c:v", "libx265", "-tag:v", "hevc", "-c:a", "libopus", "-ac", "1", mp4)
+	//	}
+	//	err = util.Exec(cmd)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	return
+	//}
 	length := len(timestamps)
 	log.Printf("时间戳%v\n", timestamps)
 	for i := 0; i < length-1; i++ {
