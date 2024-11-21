@@ -41,7 +41,7 @@ func CutOne(fp string, timestamps []string) (err error) {
 	timestamps = formatTimestamps(timestamps)
 	fname := fp
 	folder := strings.Split(fname, ".")[0]
-	os.Mkdir(folder, 0777)
+	_ = os.Mkdir(folder, 0777)
 	if !strings.HasSuffix(fname, "mp4") {
 		log.Printf("开始转换%v为mp4标准格式\n", fname)
 		mp4 := strings.Replace(fname, filepath.Ext(fname), ".mp4", -1)
