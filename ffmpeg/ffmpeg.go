@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strconv"
 	"strings"
@@ -79,9 +80,9 @@ func CutOne(fp string, timestamps []string) (err error) {
 	}
 	var last string
 	if length < 10 {
-		last = fmt.Sprintf("%02d", length+1)
+		last = fmt.Sprintf("%02d", length)
 	} else {
-		last = fmt.Sprintf("%02d", length+1)
+		last = fmt.Sprintf("%02d", length)
 	}
 	mp4 := strings.Join([]string{last, "mp4"}, ".")
 	mp4 = strings.Join([]string{folder, mp4}, string(os.PathSeparator))
@@ -114,10 +115,16 @@ func formatTimestamps(timestamps []string) []string {
 }
 func IsValidate(timestamps []string) bool {
 	var s []int
-	for _, v := range timestamps {
+	for index, v := range timestamps {
 		i, err := strconv.Atoi(v)
 		if err != nil {
 			log.Printf("可能包含非数字字符:%v\n", v)
+			return false
+		}
+		if isNineDigitNumber(v) {
+			//fmt.Printf("%s 是九位纯数字\n", v)
+		} else {
+			log.Printf("第%d行的数字有问题:%s不是九位纯数字\n", index+2, v)
 			return false
 		}
 		s = append(s, i)
@@ -129,4 +136,8 @@ func IsValidate(timestamps []string) bool {
 		}
 	}
 	return true
+}
+func isNineDigitNumber(str string) bool {
+	match, _ := regexp.MatchString("^[0-9]{9}$", str)
+	return match
 }
