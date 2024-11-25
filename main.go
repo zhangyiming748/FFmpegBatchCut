@@ -5,8 +5,6 @@ import (
 	"FFmpegBatchCut/util"
 	"fmt"
 	"log"
-	"os"
-	"path/filepath"
 )
 
 func init() {
@@ -15,37 +13,35 @@ func init() {
 }
 func main() {
 	root := "D:\\迅雷下载"
-	folders, _ := util.GetFoldersWithTimestamps(root)
+	folders, _ := util.GetFoldersWithLLCFiles(root)
 	if len(folders) == 0 {
 		log.Fatalln("没有找到任何符合条件的文件")
 	}
 	for _, folder := range folders {
 		fmt.Printf("符合筛选条件的目录:%v\n", folders)
-		timestampsFile := filepath.Join(folder, "timestamps.txt")
-		if !util.IfFileExists(timestampsFile) {
+		llcFile, has := util.FindProjLLCFile(folder)
+		if !has {
+			log.Println("未找到文件")
 			continue
 		}
+		log.Printf("找到的工程文件:%v\n", llcFile)
 		videos, _ := util.GetAllVideoFilesInDir(folder)
 		if len(videos) > 1 {
 			log.Printf("跳过包含多个视频,可能是分割后的文件夹%v\n", folder)
 			continue
 		}
 		mp4 := videos[0]
-		timestamps := util.ReadByLine(timestampsFile)
-		timestamps = removeEmptyStrings(timestamps)
+		log.Printf("找到的视频文件:%v\n", mp4)
+		timestamps := util.UseProjLLCFile(llcFile)
 		log.Printf("目录%v\t文件%v\n", folder, mp4)
 		err := ffmpeg.CutOne(mp4, timestamps)
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			if err := os.RemoveAll(timestampsFile); err != nil {
-				log.Printf("删除%v失败\t%v\n", timestampsFile, err)
-			} else {
-				if err := os.RemoveAll(mp4); err != nil {
-					log.Printf("删除%v失败\t%v\n", mp4, err)
-				}
-				log.Printf("分割文件结束,删除%v和%v成功\n", timestampsFile, mp4)
-			}
+			//if err := os.RemoveAll(mp4); err != nil {
+			//	log.Printf("删除%v失败\t%v\n", mp4, err)
+			//}
+			//log.Printf("分割文件结束,删除%v成功\n", mp4)
 		}
 	}
 }
