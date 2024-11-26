@@ -3,12 +3,13 @@ package util
 import (
 	"bufio"
 	"fmt"
-	"github.com/h2non/filetype"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/h2non/filetype"
 )
 
 func ReadByLine(fp string) []string {
@@ -45,8 +46,6 @@ func WriteByLine(fp string, s []string) {
 		writer.WriteString("\n")
 	}
 	writer.Flush()
-	return
-
 }
 
 /*

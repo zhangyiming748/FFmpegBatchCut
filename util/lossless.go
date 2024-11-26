@@ -53,7 +53,7 @@ func extractStartsFromTextFile(filePath string) ([]float64, error) {
 			parts := strings.Split(line, ":")
 			if len(parts) > 1 {
 				valueStr := strings.TrimSpace(parts[1])
-				value, err := strconv.ParseFloat(valueStr, 6)
+				value, err := strconv.ParseFloat(valueStr, 64)
 				if err != nil {
 					return nil, err
 				}

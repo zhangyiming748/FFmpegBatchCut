@@ -8,7 +8,7 @@ import (
 )
 
 func ExitAfterRun(final func()) {
-	c := make(chan os.Signal)
+	c := make(chan os.Signal, 1)
 	// 监听信号
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	go func() {
