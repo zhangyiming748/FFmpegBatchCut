@@ -1,6 +1,8 @@
 package util
 
 import (
+	"fmt"
+	"os"
 	"testing"
 )
 
@@ -34,4 +36,13 @@ func TestReadLLC(t *testing.T) {
 	for _, v := range timestamps {
 		t.Log(v)
 	}
+}
+
+func TestWindowsName(t *testing.T) {
+	hostname, err := os.Hostname()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(hostname)
 }

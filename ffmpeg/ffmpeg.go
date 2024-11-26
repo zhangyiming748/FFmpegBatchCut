@@ -41,21 +41,6 @@ func CutOne(fp string, timestamps []string) (err error) {
 	fname := fp
 	folder := strings.Split(fname, ".")[0]
 	_ = os.Mkdir(folder, 0777)
-	//if !strings.HasSuffix(fname, "mp4") {
-	//	log.Printf("开始转换%v为mp4标准格式\n", fname)
-	//	mp4 := strings.Replace(fname, filepath.Ext(fname), ".mp4", -1)
-	//	log.Printf("命令原文%v\n", exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4).String())
-	//	cmd := exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4)
-	//	// ffmpeg -hwaccel cuda -i -c:v h264_nvenc -preset medium -cq 20
-	//	if OperatingSystem == "darwin" && Architecture == "amd64" {
-	//		cmd = exec.Command("ffmpeg", "-i", fname, "-c:v", "libx265", "-tag:v", "hevc", "-c:a", "libopus", "-ac", "1", mp4)
-	//	}
-	//	err = util.Exec(cmd)
-	//	if err != nil {
-	//		return err
-	//	}
-	//	return
-	//}
 	length := len(timestamps)
 	log.Printf("时间戳%v\n", timestamps)
 	for i := 0; i < length-1; i++ {
@@ -67,10 +52,9 @@ func CutOne(fp string, timestamps []string) (err error) {
 		}
 		mp4 := strings.Join([]string{index, "mp4"}, ".")
 		mp4 = strings.Join([]string{folder, mp4}, string(os.PathSeparator))
-		log.Printf("命令原文:%s\n", exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[i], "-to", timestamps[i+1], "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4).String())
-		cmd := exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[i], "-to", timestamps[i+1], "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4)
-		if OperatingSystem == "darwin" && Architecture == "amd64" {
-			cmd = exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[i], "-to", timestamps[i+1], "-c:v", "libx265", "-tag:v", "hevc", "-c:a", "libopus", "-ac", "1", mp4)
+		cmd := exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[i], "-to", timestamps[i+1], "-c:v", "libx265", "-tag:v", "hevc", "-c:a", "libopus", "-ac", "1", "-map_metadata", "-1", mp4)
+		if hostname, _ := os.Hostname(); hostname == "DESKTOP-VGFTVD8" {
+			cmd = exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[i], "-to", timestamps[i+1], "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", "-map_metadata", "-1", mp4)
 		}
 		err = util.Exec(cmd)
 		if err != nil {

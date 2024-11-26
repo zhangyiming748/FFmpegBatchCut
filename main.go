@@ -5,6 +5,7 @@ import (
 	"FFmpegBatchCut/util"
 	"fmt"
 	"log"
+	"os"
 )
 
 func init() {
@@ -12,7 +13,7 @@ func init() {
 	util.ExitAfterRun(util.Exit)
 }
 func main() {
-	root := "D:\\迅雷下载"
+	root := "G:\\原始视频\\AV\\准备分割"
 	folders, _ := util.GetFoldersWithLLCFiles(root)
 	if len(folders) == 0 {
 		log.Fatalln("没有找到任何符合条件的文件")
@@ -38,10 +39,10 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			//if err := os.RemoveAll(mp4); err != nil {
-			//	log.Printf("删除%v失败\t%v\n", mp4, err)
-			//}
-			//log.Printf("分割文件结束,删除%v成功\n", mp4)
+			if err := os.RemoveAll(mp4); err != nil {
+				log.Printf("删除%v失败\t%v\n", mp4, err)
+			}
+			log.Printf("分割文件结束,删除%v成功\n", mp4)
 		}
 	}
 }

@@ -72,16 +72,16 @@ func formatSecondToHMS(seconds float64) string {
 	seconds -= float64(minutes * 60)
 	milliseconds := int(math.Round(seconds * 1000))
 	//hh
-	fmt.Printf("hh=%02d\n", hours)
+	//fmt.Printf("hh=%02d\n", hours)
 	//mm
-	fmt.Printf("mm=%02d\n", minutes)
+	//fmt.Printf("mm=%02d\n", minutes)
 	//ss
-	fmt.Printf("ss=%02d\n", int(seconds))
+	//fmt.Printf("ss=%02d\n", int(seconds))
 	//ms
-	fmt.Printf("ms=%03d\n", milliseconds)
+	//fmt.Printf("ms=%03d\n", milliseconds)
 	times := fmt.Sprintf("%02d:%02d:%02d.%03d", hours, minutes, int(seconds), milliseconds)
 	times = times[:12]
-	fmt.Println(times)
+	//fmt.Println(times)
 	times = strings.Replace(times, ":", "", -1)
 	times = strings.Replace(times, ".", "", -1)
 	return times
