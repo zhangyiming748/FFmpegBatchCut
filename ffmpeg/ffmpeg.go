@@ -35,7 +35,8 @@ func CutOne(fp string, timestamps []string) (err error) {
 		timestamps = newSlice
 	}
 	if !IsValidate(timestamps) {
-		return fmt.Errorf("给定的时间戳文件:%v格式非法\n", timestamps)
+		return fmt.Errorf("给定的时间戳文件:%v格式非法", timestamps)
+		//error strings should not end with punctuation or newlines (ST1005)
 	}
 	timestamps = formatTimestamps(timestamps)
 	fname := fp
@@ -69,10 +70,9 @@ func CutOne(fp string, timestamps []string) (err error) {
 	}
 	mp4 := strings.Join([]string{last, "mp4"}, ".")
 	mp4 = strings.Join([]string{folder, mp4}, string(os.PathSeparator))
-	log.Printf("命令原文:%s\n", exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[length-1], "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4).String())
-	cmd := exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[length-1], "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4)
-	if OperatingSystem == "darwin" && Architecture == "amd64" {
-		cmd = exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[length-1], "-c:v", "libx265", "-c:a", "libopus", "-tag:v", "hevc", "-ac", "1", mp4)
+	cmd := exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[length-1], "-c:v", "libx265", "-c:a", "libopus", "-tag:v", "hevc", "-ac", "1", mp4)
+	if hostname, _ := os.Hostname(); hostname == "DESKTOP-VGFTVD8" {
+		cmd = exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[length-1], "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", mp4)
 	}
 	err = util.Exec(cmd)
 	if err != nil {
