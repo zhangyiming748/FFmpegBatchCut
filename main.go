@@ -13,7 +13,7 @@ func init() {
 	util.ExitAfterRun(util.Exit)
 }
 func main() {
-	root := "G:\\原始视频\\AV\\准备分割"
+	root := "G:\\原始视频\\三上悠亜"
 	folders, _ := util.GetFoldersWithLLCFiles(root)
 	if len(folders) == 0 {
 		log.Fatalln("没有找到任何符合条件的文件")
