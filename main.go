@@ -13,7 +13,7 @@ func init() {
 	util.ExitAfterRun(util.Exit)
 }
 func main() {
-	root := "G:\\原始视频\\三上悠亜"
+	root := "G:\\原始视频\\AV\\分割完成\\三上悠亚"
 	folders, _ := util.GetFoldersWithLLCFiles(root)
 	if len(folders) == 0 {
 		log.Fatalln("没有找到任何符合条件的文件")
@@ -34,6 +34,9 @@ func main() {
 		mp4 := videos[0]
 		log.Printf("找到的视频文件:%v\n", mp4)
 		timestamps := util.UseProjLLCFile(llcFile)
+		for i, v := range timestamps {
+			log.Printf("第%d个时间戳:%s\n", i, v)
+		}
 		log.Printf("目录%v\t文件%v\n", folder, mp4)
 		err := ffmpeg.CutOne(mp4, timestamps)
 		if err != nil {
@@ -45,13 +48,4 @@ func main() {
 			log.Printf("分割文件结束,删除%v成功\n", mp4)
 		}
 	}
-}
-func removeEmptyStrings(input []string) []string {
-	var result []string
-	for _, str := range input {
-		if str != "" {
-			result = append(result, str)
-		}
-	}
-	return result
 }
