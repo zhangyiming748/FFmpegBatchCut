@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -145,6 +146,25 @@ func IsVideo(fname string) bool {
 	file.Read(head)
 	return filetype.IsVideo(head)
 }
+func GetAllVideoFilesButMp4(dir string) ([]string, error) {
+	var files []string
+	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		// 判断是否是文件，如果是文件则将其绝对路径添加到files切片中
+		if !info.IsDir() {
+			if IsVideo(path) {
+				if filter(path) {
+					files = append(files, path)
+				}
+			}
+
+		}
+		return nil
+	})
+	return files, err
+}
 func GetAllVideoFilesInDir(dir string) ([]string, error) {
 	var files []string
 	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
@@ -162,6 +182,27 @@ func GetAllVideoFilesInDir(dir string) ([]string, error) {
 	})
 	return files, err
 }
+
+/*
+视频但非mp4
+*/
+func filter(fp string) bool {
+	file, _ := os.Open(fp)
+
+	// We only have to pass the file header = first 261 bytes
+	head := make([]byte, 261)
+	file.Read(head)
+
+	if filetype.IsVideo(head) {
+		if strings.HasSuffix(fp, "mp4") {
+			return false
+		} else {
+			return true
+		}
+	} else {
+		return false
+	}
+}
 func IfFileExists(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {
@@ -171,4 +212,18 @@ func IfFileExists(path string) bool {
 		return false
 	}
 	return false
+}
+
+func ConvMp4(videos []string) {
+	for _, video := range videos {
+		before := filepath.Ext(video)
+		after := strings.Replace(video, before, ".mp4", 1)
+		cmd := exec.Command("ffmpeg", "-i", video, "-c:v", "libx265", "-c:a", "libopus", "-map_metadata", "-1", after)
+		if hostname, _ := os.Hostname(); hostname == "DESKTOP-VGFTVD8" {
+			cmd = exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", video, "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", "-map_metadata", "-1", after)
+		}
+		if err := Exec(cmd); err == nil {
+			os.Remove(video)
+		}
+	}
 }

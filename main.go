@@ -13,7 +13,9 @@ func init() {
 	util.ExitAfterRun(util.Exit)
 }
 func main() {
-	root := "G:\\原始视频\\AV\\分割完成\\三上悠亚"
+	root := "C:\\Users\\zen\\Videos\\export\\sdde"
+	videos, _ := util.GetAllVideoFilesButMp4(root)
+	util.ConvMp4(videos)
 	folders, _ := util.GetFoldersWithLLCFiles(root)
 	if len(folders) == 0 {
 		log.Fatalln("没有找到任何符合条件的文件")
