@@ -13,7 +13,7 @@ func init() {
 	util.ExitAfterRun(util.Exit)
 }
 func main() {
-	root := "C:\\Users\\zen\\Videos\\export\\sdde"
+	root := "C:\\Users\\zen\\Downloads\\火力全开"
 	videos, _ := util.GetAllVideoFilesButMp4(root)
 	util.ConvMp4(videos)
 	folders, _ := util.GetFoldersWithLLCFiles(root)

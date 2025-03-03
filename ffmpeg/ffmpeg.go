@@ -53,9 +53,28 @@ func CutOne(fp string, timestamps []string) (err error) {
 		}
 		mp4 := strings.Join([]string{index, "mp4"}, ".")
 		mp4 = strings.Join([]string{folder, mp4}, string(os.PathSeparator))
-		cmd := exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[i], "-to", timestamps[i+1], "-c:v", "libx265", "-tag:v", "hevc", "-c:a", "libopus", "-ac", "1", "-map_metadata", "-1", mp4)
+		cmd := exec.Command("ffmpeg")
 		if hostname, _ := os.Hostname(); hostname == "DESKTOP-VGFTVD8" {
-			cmd = exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[i], "-to", timestamps[i+1], "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", "-map_metadata", "-1", mp4)
+			cmd.Args = append(cmd.Args, "-hwaccel", "cuda")
+			cmd.Args = append(cmd.Args, "-i", fname)
+			cmd.Args = append(cmd.Args, "-ss", timestamps[i])
+			cmd.Args = append(cmd.Args, "-to", timestamps[i+1])
+			cmd.Args = append(cmd.Args, "-c:v", "h264_nvenc")
+			cmd.Args = append(cmd.Args, "-c:a", "libmp3lame")
+			cmd.Args = append(cmd.Args, "-preset", "slow")
+			cmd.Args = append(cmd.Args, "-cq", "18")
+			cmd.Args = append(cmd.Args, "-map_metadata", "-1")
+			cmd.Args = append(cmd.Args, mp4)
+		} else {
+			cmd.Args = append(cmd.Args, "-i", fname)
+			cmd.Args = append(cmd.Args, "-ss", timestamps[i])
+			cmd.Args = append(cmd.Args, "-to", timestamps[i+1])
+			cmd.Args = append(cmd.Args, "-c:v", "libx265")
+			cmd.Args = append(cmd.Args, "-tag:v", "hvc1")
+			cmd.Args = append(cmd.Args, "-c:a", "libmp3lame")
+			cmd.Args = append(cmd.Args, "-map_metadata", "-1")
+			cmd.Args = append(cmd.Args, mp4)
+
 		}
 		err = util.Exec(cmd)
 		if err != nil {

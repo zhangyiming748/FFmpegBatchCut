@@ -13,7 +13,7 @@ func SetLog(l string) {
 	fileLogger := &lumberjack.Logger{
 		Filename:   l,
 		MaxSize:    1, // MB
-		MaxBackups: 30,
+		MaxBackups: 1,
 		MaxAge:     28, // days
 	}
 	//Rotate causes Logger to close the existing log file and immediately create a new one. This is a helper function for applications that want to initiate rotations outside of the normal rotation rules, such as in response to SIGHUP. After rotating, this initiates a cleanup of old log files according to the normal rules.
