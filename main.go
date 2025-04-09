@@ -13,7 +13,7 @@ func init() {
 	util.ExitAfterRun(util.Exit)
 }
 func main() {
-	root := "C:\\Users\\zen\\Downloads\\火力全开"
+	root := "D:\\pikpak\\sdde-559-C"
 	videos, _ := util.GetAllVideoFilesButMp4(root)
 	util.ConvMp4(videos)
 	folders, _ := util.GetFoldersWithLLCFiles(root)
