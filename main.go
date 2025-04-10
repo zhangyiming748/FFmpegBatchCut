@@ -10,6 +10,7 @@ import (
 
 func init() {
 	util.SetLog("BitchCut.log")
+	log.SetFlags(2|16)
 	util.ExitAfterRun(util.Exit)
 }
 func main() {
