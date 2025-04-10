@@ -2,10 +2,12 @@ package ffmpeg
 
 import (
 	"FFmpegBatchCut/util"
+	"bufio"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"runtime"
 	"strconv"
@@ -142,4 +144,44 @@ func IsValidate(timestamps []string) bool {
 func isNineDigitNumber(str string) bool {
 	match, _ := regexp.MatchString("^[0-9]{9}$", str)
 	return match
+}
+func FastClean(root string) {
+	files := util.GetFiles(root)
+	for _, file := range files {
+		ext := filepath.Ext(file)
+		var newFile string
+		if ext == ".mp4" {
+			newFile = strings.TrimSuffix(file, ext) + "fast" + ext
+		} else {
+			newFile = strings.Replace(file, ext, ".mp4", 1)
+		}
+
+		cmd := exec.Command("ffmpeg", "-i", file, "-vcodec", "h264_nvenc", "-acodec", "aac", newFile)
+		
+		stdout, _ := cmd.StdoutPipe()
+		stderr, _ := cmd.StderrPipe()
+		
+		if err := cmd.Start(); err != nil {
+			log.Fatalf("cmd.Start() failed: %v", err)
+		}
+
+		go func() {
+			scanner := bufio.NewScanner(stdout)
+			for scanner.Scan() {
+				log.Printf("stdout: %s\n", scanner.Text())
+			}
+		}()
+
+		go func() {
+			scanner := bufio.NewScanner(stderr)
+			for scanner.Scan() {
+				log.Printf("stderr: %s\n", scanner.Text())
+			}
+		}()
+
+		if err := cmd.Wait(); err != nil {
+			log.Fatalf("cmd.Wait() failed: %v", err)
+		}
+		log.Printf("Successfully converted %s\n", newFile)
+	}
 }
