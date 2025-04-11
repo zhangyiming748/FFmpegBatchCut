@@ -14,6 +14,7 @@ func init() {
 	util.ExitAfterRun(util.Exit)
 }
 func main() {
+	util.CheckHour("08")
 	root := "D:\\pikpak"
 	videos, _ := util.GetAllVideoFilesButMp4(root)
 	util.ConvMp4(videos)
