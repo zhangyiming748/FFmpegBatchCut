@@ -218,9 +218,9 @@ func ConvMp4(videos []string) {
 	for _, video := range videos {
 		before := filepath.Ext(video)
 		after := strings.Replace(video, before, ".mp4", 1)
-		cmd := exec.Command("ffmpeg", "-i", video, "-c:v", "libx265", "-c:a", "libopus", "-map_metadata", "-1", after)
+		cmd := exec.Command("ffmpeg", "-i", video, "-c:v", "libx265", "-c:a", "aac", "-map_metadata", "-1", after)
 		if hostname, _ := os.Hostname(); hostname == "DESKTOP-VGFTVD8" {
-			cmd = exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", video, "-c:v", "h264_nvenc", "-c:a", "libopus", "-ac", "1", "-preset", "medium", "-cq", "20", "-map_metadata", "-1", after)
+			cmd = exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", video, "-c:v", "h264_nvenc", "-c:a", "aac", "-ac", "1", "-preset", "medium", "-cq", "20", "-map_metadata", "-1", after)
 		}
 		if err := Exec(cmd); err == nil {
 			os.Remove(video)
