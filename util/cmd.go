@@ -23,7 +23,7 @@ func Exec(cmd *exec.Cmd) error {
 
 	scanner := bufio.NewScanner(pipe)
 	for scanner.Scan() {
-		log.Println(scanner.Text())
+		fmt.Println(scanner.Text())
 	}
 
 	return cmd.Wait()
