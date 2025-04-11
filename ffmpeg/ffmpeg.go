@@ -56,6 +56,7 @@ func CutOne(fp string, timestamps []string) (err error) {
 		mp4 := strings.Join([]string{index, "mp4"}, ".")
 		mp4 = strings.Join([]string{folder, mp4}, string(os.PathSeparator))
 		cmd := exec.Command("ffmpeg")
+		cmd.Args = append(cmd.Args, "-loglevel", "error")
 		if hostname, _ := os.Hostname(); hostname == "DESKTOP-VGFTVD8" {
 			cmd.Args = append(cmd.Args, "-hwaccel", "cuda")
 			cmd.Args = append(cmd.Args, "-i", fname)
@@ -76,7 +77,6 @@ func CutOne(fp string, timestamps []string) (err error) {
 			cmd.Args = append(cmd.Args, "-c:a", "libmp3lame")
 			cmd.Args = append(cmd.Args, "-map_metadata", "-1")
 			cmd.Args = append(cmd.Args, mp4)
-
 		}
 		err = util.Exec(cmd)
 		if err != nil {
@@ -117,6 +117,7 @@ func formatTimestamps(timestamps []string) []string {
 	}
 	return formatted
 }
+
 func IsValidate(timestamps []string) bool {
 	var s []int
 	for index, v := range timestamps {
@@ -141,10 +142,12 @@ func IsValidate(timestamps []string) bool {
 	}
 	return true
 }
+
 func isNineDigitNumber(str string) bool {
 	match, _ := regexp.MatchString("^[0-9]{9}$", str)
 	return match
 }
+
 func FastClean(root string) {
 	files := util.GetFiles(root)
 	for _, file := range files {
@@ -155,30 +158,24 @@ func FastClean(root string) {
 		} else {
 			newFile = strings.Replace(file, ext, ".mp4", 1)
 		}
-
-		cmd := exec.Command("ffmpeg", "-i", file, "-vcodec", "h264_nvenc", "-acodec", "aac", newFile)
-		
+		cmd := exec.Command("ffmpeg", "-loglevel", "error", "-i", file, "-vcodec", "h264_nvenc", "-acodec", "aac", "-map_chapters", "-1", newFile)
 		stdout, _ := cmd.StdoutPipe()
 		stderr, _ := cmd.StderrPipe()
-		
 		if err := cmd.Start(); err != nil {
 			log.Fatalf("cmd.Start() failed: %v", err)
 		}
-
 		go func() {
 			scanner := bufio.NewScanner(stdout)
 			for scanner.Scan() {
 				log.Printf("stdout: %s\n", scanner.Text())
 			}
 		}()
-
 		go func() {
 			scanner := bufio.NewScanner(stderr)
 			for scanner.Scan() {
 				log.Printf("stderr: %s\n", scanner.Text())
 			}
 		}()
-
 		if err := cmd.Wait(); err != nil {
 			log.Fatalf("cmd.Wait() failed: %v", err)
 		}

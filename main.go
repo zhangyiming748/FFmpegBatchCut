@@ -14,7 +14,7 @@ func init() {
 	util.ExitAfterRun(util.Exit)
 }
 func main() {
-	root := "D:\\pikpak\\sdde-559-C"
+	root := "D:\\pikpak"
 	videos, _ := util.GetAllVideoFilesButMp4(root)
 	util.ConvMp4(videos)
 	folders, _ := util.GetFoldersWithLLCFiles(root)
