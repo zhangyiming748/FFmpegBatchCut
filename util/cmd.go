@@ -9,7 +9,7 @@ import (
 
 func Exec(cmd *exec.Cmd) error {
 	log.Printf("当前运行的命令是:%s\n", cmd.String())
-	
+
 	// 合并标准输出和错误输出
 	pipe, err := cmd.StderrPipe()
 	if err != nil {

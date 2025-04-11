@@ -8,9 +8,8 @@ import (
 
 func init() {
 	util.SetLog("BitchCut.log")
-	log.SetFlags(2|16)
+	log.SetFlags(2 | 16)
 }
-
 
 // go test -v -timeout 10h -run TestFastClean
 func TestFastClean(t *testing.T) {
