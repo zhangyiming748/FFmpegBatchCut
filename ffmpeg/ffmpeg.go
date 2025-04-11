@@ -63,7 +63,7 @@ func CutOne(fp string, timestamps []string) (err error) {
 			cmd.Args = append(cmd.Args, "-ss", timestamps[i])
 			cmd.Args = append(cmd.Args, "-to", timestamps[i+1])
 			cmd.Args = append(cmd.Args, "-c:v", "h264_nvenc")
-			cmd.Args = append(cmd.Args, "-c:a", "libmp3lame")
+			cmd.Args = append(cmd.Args, "-c:a", "aac")
 			cmd.Args = append(cmd.Args, "-preset", "slow")
 			cmd.Args = append(cmd.Args, "-cq", "18")
 			cmd.Args = append(cmd.Args, "-map_metadata", "-1")
@@ -74,7 +74,7 @@ func CutOne(fp string, timestamps []string) (err error) {
 			cmd.Args = append(cmd.Args, "-to", timestamps[i+1])
 			cmd.Args = append(cmd.Args, "-c:v", "libx265")
 			cmd.Args = append(cmd.Args, "-tag:v", "hvc1")
-			cmd.Args = append(cmd.Args, "-c:a", "libmp3lame")
+			cmd.Args = append(cmd.Args, "-c:a", "aac")
 			cmd.Args = append(cmd.Args, "-map_metadata", "-1")
 			cmd.Args = append(cmd.Args, mp4)
 		}
