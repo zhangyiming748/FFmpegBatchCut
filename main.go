@@ -13,11 +13,11 @@ func init() {
 	log.SetFlags(2 | 16)
 	util.ExitAfterRun(util.Exit)
 }
+
 func main() {
-	util.CheckHour("08")
-	root := "D:\\pikpak"
-	videos, _ := util.GetAllVideoFilesButMp4(root)
-	util.ConvMp4(videos)
+	root := "D:\\pikpak\\分割"
+	// videos, _ := util.GetAllVideoFilesButMp4(root)
+	// util.ConvMp4(videos)
 	folders, _ := util.GetFoldersWithLLCFiles(root)
 	if len(folders) == 0 {
 		log.Fatalln("没有找到任何符合条件的文件")
