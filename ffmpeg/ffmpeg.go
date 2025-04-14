@@ -159,6 +159,7 @@ func FastClean(root string) {
 			newFile = strings.Replace(file, ext, ".mp4", 1)
 		}
 		cmd := exec.Command("ffmpeg", "-loglevel", "error", "-i", file, "-vcodec", "h264_nvenc", "-acodec", "aac", "-map_chapters", "-1", newFile)
+		log.Printf("Running command: %s\n", cmd.String())
 		stdout, _ := cmd.StdoutPipe()
 		stderr, _ := cmd.StderrPipe()
 		if err := cmd.Start(); err != nil {
