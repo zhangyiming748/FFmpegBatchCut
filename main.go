@@ -6,12 +6,16 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"runtime"
 )
 
 func init() {
 	util.SetLog("BitchCut.log")
 	log.SetFlags(2 | 16)
 	util.ExitAfterRun(util.Exit)
+	if runtime.GOOS != "windows" {
+		log.Println("及其不建议在Windows下运行")
+	}
 }
 
 func main() {

@@ -91,9 +91,11 @@ func CutOne(fp string, timestamps []string) (err error) {
 	}
 	mp4 := strings.Join([]string{last, "mp4"}, ".")
 	mp4 = strings.Join([]string{folder, mp4}, string(os.PathSeparator))
-	cmd := exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[length-1], "-c:v", "libx265", "-c:a", "aac", "-tag:v", "hevc", "-ac", "1", mp4)
+	var cmd *exec.Cmd
 	if hostname, _ := os.Hostname(); hostname == "DESKTOP-VGFTVD8" {
 		cmd = exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[length-1], "-c:v", "h264_nvenc", "-c:a", "aac", "-ac", "1", "-preset", "medium", "-cq", "20", mp4)
+	}else {
+		cmd = exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[length-1], "-c:v", "libx265", "-c:a", "aac", "-tag:v", "hevc", "-ac", "1", mp4)
 	}
 	err = util.Exec(cmd)
 	if err != nil {
