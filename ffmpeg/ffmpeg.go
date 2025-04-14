@@ -95,7 +95,7 @@ func CutOne(fp string, timestamps []string) (err error) {
 	if hostname, _ := os.Hostname(); hostname == "DESKTOP-VGFTVD8" {
 		cmd = exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[length-1], "-c:v", "h264_nvenc", "-c:a", "aac", "-ac", "1", "-preset", "medium", "-cq", "20", mp4)
 	}else {
-		cmd = exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[length-1], "-c:v", "libx265", "-c:a", "aac", "-tag:v", "hevc", "-ac", "1", mp4)
+		cmd = exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[length-1], "-c:v", "libx265", "-c:a", "aac", "-tag:v", "hvc1", "-ac", "1", mp4)
 	}
 	err = util.Exec(cmd)
 	if err != nil {

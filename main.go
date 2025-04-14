@@ -19,7 +19,7 @@ func init() {
 }
 
 func main() {
-	root := "D:\\pikpak\\分割"
+	root := "/Volumes/T7/av/分割"
 	// videos, _ := util.GetAllVideoFilesButMp4(root)
 	// util.ConvMp4(videos)
 	folders, _ := util.GetFoldersWithLLCFiles(root)
