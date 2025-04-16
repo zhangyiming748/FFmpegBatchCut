@@ -12,7 +12,6 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-	"time"
 )
 
 var (
@@ -94,13 +93,10 @@ func CutOne(fp string, timestamps []string) (err error) {
 	mp4 = strings.Join([]string{folder, mp4}, string(os.PathSeparator))
 	var cmd *exec.Cmd
 	if hostname, _ := os.Hostname(); hostname == "DESKTOP-VGFTVD8" {
-		cmd = exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[length-1], "-c:v", "h264_nvenc", "-c:a", "aac", "-ac", "1", "-preset", "medium", "-cq", "20", mp4)
-	}else {
-		cmd = exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[length-1], "-c:v","libx265","-c:a", "aac", "-tag:v", "hvc1", "-ac", "1", mp4)
-		//cmd = exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[length-1], "-c:v", "libx265", "-c:a", "aac", "-tag:v", "hvc1", "-ac", "1", mp4)
+		cmd = exec.Command("ffmpeg", "-hwaccel", "cuda", "-i", fname, "-ss", timestamps[length-1], "-c:v", "h264_nvenc", "-c:a", "aac", "-ac", "1", "-preset", "medium", "-cq", "20", "-progress", "pipe:1", mp4)
+	} else {
+		cmd = exec.Command("ffmpeg", "-i", fname, "-ss", timestamps[length-1], "-c:v", "libx265", "-c:a", "aac", "-tag:v", "hvc1", "-ac", "1", "-progress", "pipe:1", mp4)
 	}
-	now := time.Now().Format("15:04:05")
-	log.Printf("视频最后一部分执行时间:%s\t当前运行的命令是:%s\n", now,cmd.String())
 	err = util.Exec(cmd)
 	if err != nil {
 		return err

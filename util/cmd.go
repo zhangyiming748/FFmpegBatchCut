@@ -9,22 +9,34 @@ import (
 
 func Exec(cmd *exec.Cmd) error {
 	log.Printf("当前运行的命令是:%s\n", cmd.String())
-
-	// 合并标准输出和错误输出
-	pipe, err := cmd.StderrPipe()
+	
+	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return fmt.Errorf("创建管道失败: %v", err)
+		return fmt.Errorf("创建stdout管道失败: %v", err)
 	}
-	cmd.Stdout = cmd.Stderr
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		return fmt.Errorf("创建stderr管道失败: %v", err)
+	}
 
 	if err := cmd.Start(); err != nil {
 		return fmt.Errorf("启动命令失败: %v", err)
 	}
 
-	scanner := bufio.NewScanner(pipe)
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
-	}
+	// 处理输出
+	go func() {
+		scanner := bufio.NewScanner(stdout)
+		for scanner.Scan() {
+			log.Printf("进度: %s\n", scanner.Text())
+		}
+	}()
+
+	go func() {
+		scanner := bufio.NewScanner(stderr)
+		for scanner.Scan() {
+			log.Printf("错误: %s\n", scanner.Text())
+		}
+	}()
 
 	return cmd.Wait()
 }
