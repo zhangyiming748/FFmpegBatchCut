@@ -27,14 +27,14 @@ func Exec(cmd *exec.Cmd) error {
 	go func() {
 		scanner := bufio.NewScanner(stdout)
 		for scanner.Scan() {
-			log.Printf("进度: %s\n", scanner.Text())
+			fmt.Printf("进度: %s\n", scanner.Text())
 		}
 	}()
 
 	go func() {
 		scanner := bufio.NewScanner(stderr)
 		for scanner.Scan() {
-			log.Printf("错误: %s\n", scanner.Text())
+			fmt.Printf("错误: %s\n", scanner.Text())
 		}
 	}()
 

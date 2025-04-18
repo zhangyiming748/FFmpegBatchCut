@@ -14,12 +14,12 @@ func init() {
 	log.SetFlags(2 | 16)
 	util.ExitAfterRun(util.Exit)
 	if runtime.GOOS != "windows" {
-		log.Println("及其不建议在Windows下运行")
+		log.Println("极其不建议在Windows下运行")
 	}
 }
 
 func main() {
-	root := "/Volumes/T7/av/分割"
+	root := "/mnt/f/整理/AV/综艺"
 	// videos, _ := util.GetAllVideoFilesButMp4(root)
 	// util.ConvMp4(videos)
 	folders, _ := util.GetFoldersWithLLCFiles(root)
