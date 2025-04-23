@@ -19,7 +19,7 @@ func init() {
 }
 
 func main() {
-	root := "/mnt/f/整理/AV/综艺"
+	root := "/mnt/g/等待分割/护士"
 	// videos, _ := util.GetAllVideoFilesButMp4(root)
 	// util.ConvMp4(videos)
 	folders, _ := util.GetFoldersWithLLCFiles(root)
