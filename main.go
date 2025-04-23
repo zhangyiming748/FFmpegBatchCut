@@ -19,7 +19,7 @@ func init() {
 }
 
 func main() {
-	root := "/mnt/g/等待分割/护士"
+	root := "/mnt/g/等待分割/介绍影片"
 	// videos, _ := util.GetAllVideoFilesButMp4(root)
 	// util.ConvMp4(videos)
 	folders, _ := util.GetFoldersWithLLCFiles(root)
@@ -27,9 +27,9 @@ func main() {
 		log.Fatalln("没有找到任何符合条件的文件")
 	}
 	for _, folder := range folders {
-		defer func ()  {
-			if err:=recover(); err!= nil {
-				log.Printf("get panic : %v\n",err)
+		defer func() {
+			if err := recover(); err != nil {
+				log.Printf("get panic : %v\n", err)
 			}
 		}()
 		fmt.Printf("符合筛选条件的目录:%v\n", folders)

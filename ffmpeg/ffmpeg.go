@@ -67,8 +67,8 @@ func CutOne(fp string, timestamps []string) (err error) {
 			cmd.Args = append(cmd.Args, "-preset", "slow")
 			cmd.Args = append(cmd.Args, "-cq", "18")
 			cmd.Args = append(cmd.Args, "-map_metadata", "-1")
-			cmd.Args = append(cmd.Args, "-vsync", "0")  // 添加这行
-			cmd.Args = append(cmd.Args, "-copyts")      // 添加这行
+			cmd.Args = append(cmd.Args, "-vsync", "0") // 添加这行
+			cmd.Args = append(cmd.Args, "-copyts")     // 添加这行
 			cmd.Args = append(cmd.Args, mp4)
 		} else {
 			cmd.Args = append(cmd.Args, "-i", fname)
@@ -78,8 +78,8 @@ func CutOne(fp string, timestamps []string) (err error) {
 			cmd.Args = append(cmd.Args, "-tag:v", "hvc1")
 			cmd.Args = append(cmd.Args, "-c:a", "aac")
 			cmd.Args = append(cmd.Args, "-map_metadata", "-1")
-			cmd.Args = append(cmd.Args, "-vsync", "0")  // 添加这行
-			cmd.Args = append(cmd.Args, "-copyts")      // 添加这行
+			cmd.Args = append(cmd.Args, "-vsync", "0") // 添加这行
+			cmd.Args = append(cmd.Args, "-copyts")     // 添加这行
 			cmd.Args = append(cmd.Args, mp4)
 		}
 		err = util.Exec(cmd)
