@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"log"
 	"os/exec"
 )
@@ -12,7 +13,7 @@ func Exec(cmd *exec.Cmd) error {
 		log.Printf("命令执行失败:%s\n", err.Error())
 		return err
 	} else {
-		log.Printf("命令执行成功:%v\n", string(output))
+		fmt.Printf("命令执行成功:%v\n", string(output))
 	}
 	return nil
 }
