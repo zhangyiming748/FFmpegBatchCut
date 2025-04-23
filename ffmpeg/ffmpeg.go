@@ -104,6 +104,11 @@ func CutOne(fp string, timestamps []string) (err error) {
 	err = util.Exec(cmd)
 	if err != nil {
 		return err
+	}else{
+		log.Println("运行完成")
+		if err :=os.Remove(fname);err!= nil{
+			log.Printf("删除原文件失败:%v\n", err)
+		}
 	}
 	return nil
 }
