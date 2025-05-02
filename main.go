@@ -19,7 +19,7 @@ func init() {
 }
 
 func main() {
-	root := "/mnt/g/等待分割/介绍影片"
+	root := "F:\\原始视频\\pantyhose\\光沢"
 	// videos, _ := util.GetAllVideoFilesButMp4(root)
 	// util.ConvMp4(videos)
 	folders, _ := util.GetFoldersWithLLCFiles(root)
@@ -32,7 +32,9 @@ func main() {
 				log.Printf("get panic : %v\n", err)
 			}
 		}()
-		fmt.Printf("符合筛选条件的目录:%v\n", folders)
+		for _, folder := range folders {
+			fmt.Printf("符合筛选条件的目录:%v\n", folder)
+		}
 		llcFile, has := util.FindProjLLCFile(folder)
 		if !has {
 			log.Println("未找到文件")
@@ -53,7 +55,8 @@ func main() {
 		log.Printf("目录%v\t文件%v\n", folder, mp4)
 		err := ffmpeg.CutOne(mp4, timestamps)
 		if err != nil {
-			log.Fatal(err)
+			log.Printf("%v\n",err)
+			continue
 		} else {
 			if err := os.RemoveAll(mp4); err != nil {
 				log.Printf("删除%v失败\t%v\n", mp4, err)

@@ -42,7 +42,9 @@ func CutOne(fp string, timestamps []string) (err error) {
 	}
 	timestamps = formatTimestamps(timestamps)
 	fname := fp
-	folder := strings.Split(fname, ".")[0]
+	//folder := strings.Split(fname, ".")[0]
+	folder := strings.TrimSuffix(fname, filepath.Ext(fname))
+	folder = strings.ToUpper(folder)
 	_ = os.Mkdir(folder, 0777)
 	length := len(timestamps)
 	log.Printf("时间戳%v\n", timestamps)
