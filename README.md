@@ -1,12 +1,12 @@
 # FFmpegBatchCut
 
-基于 FFmpeg 的视频批量切割工具，支持从 LosslessCut 项目文件中读取时间点进行视频分割。
+基于 FFmpeg 的视频批量切割工具，支持从 [LosslessCut](https://github.com/mifi/lossless-cut) 项目文件中读取时间点进行视频分割。
 A batch video cutting tool based on FFmpeg, supporting video segmentation using timestamps from LosslessCut project files.
 
 ## 功能特点 | Features
 
-- ✅ 支持读取 LosslessCut 的 proj.llc 项目文件
-  - Support reading proj.llc project files from LosslessCut
+- ✅ 支持读取 [LosslessCut](https://github.com/mifi/lossless-cut) 的 proj.llc 项目文件
+  - Support reading proj.llc project files from [LosslessCut](https://github.com/mifi/lossless-cut)
 - ✅ 自动按序号生成分割后的视频文件
   - Automatically generate segmented video files with sequential numbering
 - ✅ 支持 NVIDIA GPU 加速（在特定设备上）
@@ -25,7 +25,7 @@ A batch video cutting tool based on FFmpeg, supporting video segmentation using 
 ## 安装 | Installation
 
 ```bash
-git clone https://github.com/yourusername/FFmpegBatchCut.git
+git clone https://github.com/zhangyiming748/FFmpegBatchCut.git
 cd FFmpegBatchCut
 go mod download
 ```
