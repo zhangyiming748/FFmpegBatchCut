@@ -16,3 +16,9 @@ func TestFastClean(t *testing.T) {
 	root := "D:\\pikpak"
 	FastClean(root)
 }
+
+func TestZero(t *testing.T) {
+	ret:=util.FormatSecondToHMS(0)
+	t.Log(ret)
+	//00:00:00.000
+}

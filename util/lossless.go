@@ -1,3 +1,4 @@
+// 提供无损切割相关的工具函数
 package util
 
 import (
@@ -66,20 +67,8 @@ func extractStartsFromTextFile(filePath string) ([]float64, error) {
 	return startValues, nil
 }
 
-// 秒转换为时间
-func FormatSecondToHMS(seconds float64) string {
-	hours := int(seconds / 3600)
-	seconds -= float64(hours * 3600)
-	minutes := int(seconds / 60)
-	seconds -= float64(minutes * 60)
-	milliseconds := int(math.Round(seconds * 1000))
-	times := fmt.Sprintf("%02d:%02d:%02d.%03d", hours, minutes, int(seconds), milliseconds)
-	times = times[:12]
-	//fmt.Println(times)
-	times = strings.Replace(times, ":", "", -1)
-	times = strings.Replace(times, ".", "", -1)
-	return times
-}
+
+
 func SecondToHMS(currentTime []float64) []string {
 	var timestamps []string
 	for _, second := range currentTime {
@@ -88,13 +77,33 @@ func SecondToHMS(currentTime []float64) []string {
 	return timestamps
 }
 
+// Segment 定义视频片段的结构
 type Segment struct {
-	Start float64
-	End   float64
-	Name  string
+    Start float64 // 开始时间（秒）
+    End   float64 // 结束时间（秒）
+    Name  string  // 片段名称
 }
 
-// 解析proj.llc文件中的Segment结构体
+// FormatSecondToHMS 将秒数转换为时分秒格式
+// 输入: 秒数（float64）
+// 输出: "HH:MM:SS.mmm" 格式的时间字符串
+func FormatSecondToHMS(seconds float64) string {
+    hours := int(seconds / 3600)
+    seconds -= float64(hours * 3600)
+    minutes := int(seconds / 60)
+    seconds -= float64(minutes * 60)
+    milliseconds := int(math.Round(seconds * 1000))
+    times := fmt.Sprintf("%02d:%02d:%02d.%03d", hours, minutes, int(seconds), milliseconds)
+    times = times[:12]
+    //fmt.Println(times)
+    // times = strings.Replace(times, ":", "", -1)
+    // times = strings.Replace(times, ".", "", -1)
+    return times
+}
+
+// ParseSegments 解析proj.llc文件中的片段信息
+// filename: proj.llc文件路径
+// 返回: 片段列表和可能的错误
 func ParseSegments(filename string) ([]Segment, error) {
 	file, err := os.Open(filename)
 	if err != nil {

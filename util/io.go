@@ -1,3 +1,4 @@
+// 提供文件和目录操作的工具函数
 package util
 
 import (
@@ -13,6 +14,9 @@ import (
 	"github.com/h2non/filetype"
 )
 
+// ReadByLine 按行读取文件内容
+// fp: 文件路径
+// 返回: 字符串切片，每个元素为文件的一行
 func ReadByLine(fp string) []string {
 	lines := []string{}
 	fi, err := os.Open(fp)
@@ -137,6 +141,9 @@ func IsExist(fp string) bool {
 	}
 }
 
+// IsVideo 检查文件是否为视频文件
+// fname: 文件路径
+// 返回: 布尔值，表示是否为视频文件
 func IsVideo(fname string) bool {
 	// Open a file descriptor
 	file, _ := os.Open(fname)
@@ -166,6 +173,9 @@ func GetAllVideoFilesButMp4(dir string) ([]string, error) {
 	return files, err
 }
 
+// GetAllVideoFilesInDir 获取指定目录下的所有视频文件
+// dir: 目录路径
+// 返回: 视频文件路径列表和可能的错误
 func GetAllVideoFilesInDir(dir string) ([]string, error) {
 	var files []string
 	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
