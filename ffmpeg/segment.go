@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 )
 
 // CutBySegments 根据给定的片段列表切割视频文件
@@ -32,6 +33,7 @@ func CutBySegments(mp4 string, segments []util.Segment) error {
 // start: 开始时间点
 // end: 结束时间点
 func CutBySegment(index, mp4, start, end string) error {
+	out :=filepath.Join(filepath.Dir(mp4),index+".mp4")
 	cmd := exec.Command("ffmpeg")
 	if hostname, _ := os.Hostname(); hostname == "DESKTOP-VGFTVD8" {
 		cmd.Args = append(cmd.Args, "-hwaccel", "cuda")
@@ -61,7 +63,7 @@ func CutBySegment(index, mp4, start, end string) error {
 	cmd.Args = append(cmd.Args, "-map_metadata", "-1")
 	cmd.Args = append(cmd.Args, "-vsync", "0") // 添加这行
 	cmd.Args = append(cmd.Args, "-copyts")     // 添加这行
-	cmd.Args = append(cmd.Args, mp4)
+	cmd.Args = append(cmd.Args, out)
 	err := util.Exec(cmd)
 	if err != nil {
 		return err

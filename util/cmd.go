@@ -12,7 +12,6 @@ import (
 // 返回: 可能的错误
 func Exec(cmd *exec.Cmd) error {
 	log.Printf("当前运行的命令是:%s\n", cmd.String())
-
 	if output, err := cmd.CombinedOutput(); err != nil {
 		log.Printf("命令执行失败:%s\n", err.Error())
 		return err
