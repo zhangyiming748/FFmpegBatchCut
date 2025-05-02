@@ -19,7 +19,7 @@ func TestReadLLC(t *testing.T) {
 	for _, v := range seconds {
 		t.Log(v)
 	}
-	timestamps := secondToHMS(seconds)
+	timestamps := SecondToHMS(seconds)
 	for _, v := range timestamps {
 		t.Log(v)
 	}
