@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"bufio"
+    "regexp"
 )
 
 func UseProjLLCFile(llcFile string) []string {
@@ -92,4 +94,70 @@ func secondToHMS(currentTime []float64) []string {
 		timestamps = append(timestamps, formatSecondToHMS(second))
 	}
 	return timestamps
+}
+
+type Segment struct {
+	Start float64
+	End   float64
+	Name  string
+}
+
+// 解析proj.llc文件中的Segment结构体
+func ParseSegments(filename string) ([]Segment, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var segments []Segment
+	var currentSegment *Segment
+
+	// 用于提取数值的正则表达式
+	numRegex := regexp.MustCompile(`[-]?\d+\.?\d*`)
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+
+		// 开始新的段落
+		if strings.Contains(line, "{") {
+			currentSegment = &Segment{}
+			continue
+		}
+
+		// 结束当前段落
+		if strings.Contains(line, "},") {
+			if currentSegment != nil {
+				segments = append(segments, *currentSegment)
+				currentSegment = nil
+			}
+			continue
+		}
+
+		// 解析字段
+		if currentSegment != nil {
+			if strings.Contains(line, "start:") {
+				if num := numRegex.FindString(line); num != "" {
+					currentSegment.Start, _ = strconv.ParseFloat(num, 64)
+				}
+			} else if strings.Contains(line, "end:") {
+				if num := numRegex.FindString(line); num != "" {
+					currentSegment.End, _ = strconv.ParseFloat(num, 64)
+				}
+			} else if strings.Contains(line, "name:") {
+				parts := strings.Split(line, ":")
+				if len(parts) > 1 {
+					currentSegment.Name = strings.Trim(parts[1], " ',")
+				}
+			}
+		}
+	}
+
+	// 处理最后一个段落（如果有的话）
+	if currentSegment != nil {
+		segments = append(segments, *currentSegment)
+	}
+
+	return segments, scanner.Err()
 }
