@@ -45,7 +45,6 @@ func CutBySegment(index, mp4, start, end string) error {
 			cmd.Args = append(cmd.Args, "-to", end)
 		}
 		cmd.Args = append(cmd.Args, "-c:v", "h264_nvenc")
-		cmd.Args = append(cmd.Args, "-c:a", "aac")
 		cmd.Args = append(cmd.Args, "-preset", "slow")
 		cmd.Args = append(cmd.Args, "-cq", "18")
 	} else {
@@ -58,8 +57,8 @@ func CutBySegment(index, mp4, start, end string) error {
 		}
 		cmd.Args = append(cmd.Args, "-c:v", "libx265")
 		cmd.Args = append(cmd.Args, "-tag:v", "hvc1")
-		cmd.Args = append(cmd.Args, "-c:a", "aac")
 	}
+	cmd.Args = append(cmd.Args, "-c:a", "aac")
 	cmd.Args = append(cmd.Args, "-map_metadata", "-1")
 	cmd.Args = append(cmd.Args, "-vsync", "0") // 添加这行
 	cmd.Args = append(cmd.Args, "-copyts")     // 添加这行
