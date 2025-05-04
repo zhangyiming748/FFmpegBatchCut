@@ -9,7 +9,7 @@ func TestAnyVideoToMP4(t *testing.T) {
 	// 输入：指定文件夹路径
 	// 输出：转换后的 MP4 文件路径
 	// 预期结果：所有视频文件都被成功转换为 MP4 格式
-	root:="F:\\原始视频\\Uncen Leaked"
+	root:="D:\\pikpak\\角色扮演成熟女神\\My Pack"
 	files,err:=util.GetAllVideoButMP4FilesInRootFolder(root)
 	if err!= nil {
 		t.Fatal(err)

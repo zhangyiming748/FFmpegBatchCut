@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"runtime"
+	"time"
 )
 
 func init() {
@@ -22,10 +23,26 @@ func init() {
         log.Println("极其不建议在Windows下运行")
     }
 }
-
+// waitUntil7AM 等待直到早上7点
+func waitUntil7AM() {
+    for {
+        now := time.Now()
+        hour := now.Hour()
+        
+        // 如果当前是早上7点，返回
+        if hour == 7 {
+            return
+        }
+        
+        // 不是早上7点，等待30分钟
+        time.Sleep(30 * time.Minute)
+    }
+}
 func main() {
+	// 在开始处理之前等待到早上7点
+    // waitUntil7AM()
     // 指定要处理的根目录
-    root := "F:\\原始视频\\pantyhose\\光沢"
+    root := "F:\\原始视频\\pantyhose"
     
     // 获取包含LLC文件的所有文件夹
     folders, _ := util.GetFoldersWithLLCFiles(root)
@@ -68,6 +85,9 @@ func main() {
         } else {
             if err := os.RemoveAll(mp4); err != nil {
                 log.Printf("删除%v失败\t%v\n", mp4, err)
+            }
+			if err := os.RemoveAll(llcFile); err != nil {
+                log.Printf("删除%v失败\t%v\n", llcFile, err)
             }
             log.Printf("分割文件结束,删除%v成功\n", mp4)
         }
