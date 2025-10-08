@@ -147,7 +147,7 @@ func IsExist(fp string) bool {
 func IsVideo(fname string) bool {
 	// Open a file descriptor
 	file, _ := os.Open(fname)
-    defer file.Close()
+	defer file.Close()
 	// We only have to pass the file header = first 261 bytes
 	head := make([]byte, 261)
 	file.Read(head)
@@ -199,7 +199,7 @@ func GetAllVideoFilesInDir(dir string) ([]string, error) {
 */
 func filter(fp string) bool {
 	file, _ := os.Open(fp)
-
+	defer file.Close()
 	// We only have to pass the file header = first 261 bytes
 	head := make([]byte, 261)
 	file.Read(head)
@@ -207,12 +207,12 @@ func filter(fp string) bool {
 	if filetype.IsVideo(head) {
 		if strings.HasSuffix(fp, "mp4") {
 			return false
-		} else {
-			return true
 		}
-	} else {
-		return false
+
+		return true
 	}
+
+	return false
 }
 func IfFileExists(path string) bool {
 	_, err := os.Stat(path)
