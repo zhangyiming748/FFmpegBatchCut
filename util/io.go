@@ -147,7 +147,7 @@ func IsExist(fp string) bool {
 func IsVideo(fname string) bool {
 	// Open a file descriptor
 	file, _ := os.Open(fname)
-
+    defer file.Close()
 	// We only have to pass the file header = first 261 bytes
 	head := make([]byte, 261)
 	file.Read(head)
